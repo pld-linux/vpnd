@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# vpnd		Virtual Private Network Daemon
+#
+# chkconfig:	345 15 95
+# description:	Virtual Private Network Daemon
+#
+
+# Source function library
+. /etc/rc.d/init.d/functions
+
+# Get network config
+. /etc/sysconfig/network
+
+# Get service config
+[ -f /etc/sysconfig/vpnd ] && . /etc/sysconfig/vpnd
+
+# Check that networking is up.
+if is_no "${NETWORKING}"; then
+        # nls "ERROR: Networking is down. %s can't be run." <service>
+        msg_Network_Down vpnd
+        exit 1
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	# Check if the service is already running?
+        if [ ! -f /var/lock/subsys/vpnd ]; then
+	    for config in /etc/vpnd/*.conf; do
+		cfg=$(basename "${config}" 2> /dev/null)
+		msg_starting "vpnd ${cfg}"
+		daemon vpnd -f ${config}
+	    done
+	        RETVAL=$?
+    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/vpnd
+	else
+        	msg_Already_Running vpnd
+	        exit 1
+	fi
+	;;
+  stop)
+        # Stop daemons.
+	if [ -f /var/lock/subsys/vpnd ]; then
+                msg_stopping vpnds
+                killproc vpnd
+                rm -f /var/lock/subsys/vpnd > /dev/null 2>&1
+        else
+		msg_Not_Running vpnd
+	        exit 1
+	fi
+	;;
+  status)
+	status vpnd
+	RETVAL=$?
+	exit $RETVAL
+	;;
+  restart|reload)
+	$0 stop
+	$0 start
+	;;
+  *)
+	msg_Usage "$0 {start|stop|restart|status}"
+	exit 1
+	;;
+esac
+
+exit $RETVAL
+

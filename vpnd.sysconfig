@@ -1,0 +1,5 @@
+# sysconfig for vpnd
+
+# Define nice level for vpnd
+SERVICE_RUN_NICE_LEVEL="+0"
+
