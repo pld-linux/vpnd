@@ -49,8 +49,6 @@ install %{name}.conf	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}
 
-gzip -9nf FAQ.TXT README SPEED.TXT VERSIONS
-
 %post
 /sbin/chkconfig --add vpnd
 if [ -f %{_var}/lock/subsys/vpnd ]; then
@@ -72,7 +70,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz samples
+%doc FAQ.TXT README SPEED.TXT VERSIONS samples
 %attr(754,root,root) %{_sysconfdir}/rc.d/init.d/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}/%{name}
