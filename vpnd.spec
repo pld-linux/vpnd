@@ -12,7 +12,8 @@ Source2:	%{name}.sysconfig
 Patch0:		%{name}-confdir.patch
 URL:		http://sunsite.dk/vpnd/
 BuildRequires:	zlib-devel
-Prereq:		rc-scripts
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -42,13 +43,16 @@ http://www.counterpane.com/) z kluczem d³ugo¶ci do 576 bitów
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sbindir}
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig,rc.d/init.d,%{name}}
+install -d $RPM_BUILD_ROOT{%{_sysconfdir}/%{name},/etc/sysconfig,/etc/rc.d/init.d}
 
 install %{name}		$RPM_BUILD_ROOT%{_sbindir}
 install %{name}.chat	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 install %{name}.conf	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add vpnd
@@ -65,9 +69,6 @@ if [ "$1" = "0" ]; then
 	fi
 	/sbin/chkconfig --del vpnd
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
