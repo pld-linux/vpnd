@@ -25,8 +25,8 @@ http://www.counterpane.com/) with a key length of up to 576 bits (may
 be downgraded to a minimum of 0 bits to suit any legal restrictions).
 
 %description -l pl
-vpnd jest daemonem, który ³aczy dwie sieci poprzez TCP/IP lub
-(writualn±) liniê dziwr¿awion± do³±czon± do interfejsu szeregowego.
+vpnd jest demonem, który ³±czy dwie sieci poprzez TCP/IP lub
+(wirtualn±) liniê dzier¿awion± do³±czon± do interfejsu szeregowego.
 Wszystkie dane przesy³ane pomiêdzy sieciami s± szyfrowane za pomoc±
 nieopatentowanego algorytmu Blowfish (zobacz
 http://www.counterpane.com/) z kluczem d³ugo¶ci do 576 bitów
