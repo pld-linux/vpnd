@@ -6,6 +6,7 @@ Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://sunsite.dk/vpnd/archive/%{name}-%{version}.tar.gz
+# Source0-md5:	6ca958fb5471faf3ebebe4caa75154e7
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-confdir.patch
