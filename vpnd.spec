@@ -46,21 +46,21 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/{sysconfig,rc.d/init.d,%{name}}
 install %{name}		$RPM_BUILD_ROOT%{_sbindir}
 install %{name}.chat	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
 install %{name}.conf	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/%{name}
-install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
 %post
 /sbin/chkconfig --add vpnd
 if [ -f %{_var}/lock/subsys/vpnd ]; then
-	%{_sysconfdir}/rc.d/init.d/vpnd restart >&2
+	/etc/rc.d/init.d/vpnd restart >&2
 else
-	echo "Run \"%{_sysconfdir}/rc.d/init.d/vpnd start\" to start vtun daemons."
+	echo "Run \"/etc/rc.d/init.d/vpnd start\" to start vtun daemons."
 fi
 
 %preun
 if [ "$1" = "0" ]; then
 	if [ -f %{_var}/lock/subsys/vpnd ]; then
-		%{_sysconfdir}/rc.d/init.d/vpnd stop >&2
+		/etc/rc.d/init.d/vpnd stop >&2
 	fi
 	/sbin/chkconfig --del vpnd
 fi
@@ -71,8 +71,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc FAQ.TXT README SPEED.TXT VERSIONS samples
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/%{name}
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/sysconfig/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) /etc/sysconfig/%{name}
 %attr(750,root,root) %dir %{_sysconfdir}/%{name}
 %attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/%{name}/*
 %attr(755,root,root) %{_sbindir}/*
