@@ -16,51 +16,61 @@
 [ -f /etc/sysconfig/vpnd ] && . /etc/sysconfig/vpnd
 
 # Check that networking is up.
-if is_no "${NETWORKING}"; then
-        # nls "ERROR: Networking is down. %s can't be run." <service>
-        msg_Network_Down vpnd
-        exit 1
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		# nls "ERROR: Networking is down. %s can't be run." <service>
+		msg_network_down vpnd
+		exit 1
+	fi
+else
+	exit 0
 fi
+
 
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
-        if [ ! -f /var/lock/subsys/vpnd ]; then
-	    for config in /etc/vpnd/*.conf; do
-		cfg=$(basename "${config}" 2> /dev/null)
-		msg_starting "vpnd ${cfg}"
-		daemon vpnd -f ${config}
-	    done
-	        RETVAL=$?
-    		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/vpnd
+	if [ ! -f /var/lock/subsys/vpnd ]; then
+		for config in /etc/vpnd/*.conf; do
+			cfg=$(basename "${config}" 2> /dev/null)
+			msg_starting "vpnd ${cfg}"
+			daemon vpnd -f ${config}
+			[ RETVAL -eq 0 ] && RETVAL=$?
+		done
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/vpnd
 	else
-        	msg_Already_Running vpnd
-	        exit 1
+		msg_already_running vpnd
+		exit 1
 	fi
 	;;
   stop)
-        # Stop daemons.
 	if [ -f /var/lock/subsys/vpnd ]; then
-                msg_stopping vpnds
-                killproc vpnd
-                rm -f /var/lock/subsys/vpnd > /dev/null 2>&1
-        else
-		msg_Not_Running vpnd
-	        exit 1
+		# Stop daemons.
+		msg_stopping vpnds
+		killproc vpnd
+		RETVAL=$?
+		rm -f /var/lock/subsys/vpnd > /dev/null 2>&1
+	else
+		msg_not_running vpnd
+		exit 1
 	fi
 	;;
   status)
 	status vpnd
 	RETVAL=$?
-	exit $RETVAL
 	;;
   restart|reload)
 	$0 stop
 	$0 start
+	exit $?
+	;;
+  force-reload)
+	$0 stop && $0 start
+	exit $?
 	;;
   *)
-	msg_Usage "$0 {start|stop|restart|status}"
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
 	exit 1
 	;;
 esac
