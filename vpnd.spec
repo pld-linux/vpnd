@@ -1,16 +1,16 @@
 Summary:	Virtual Private Network Daemon
 Summary(pl):	Daemon Wirtualnych Sieci Prywatnych (VPN)
 Name:		vpnd
-Version:	1.1.0
-Release:	1
+Version:	1.1.2
+Release:	0.1
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://sunsite.dk/vpnd/archive/%{name}-%{version}.tar.gz
-# Source0-md5:	6ca958fb5471faf3ebebe4caa75154e7
+# Source0-md5:	6b8e18530b15801d2f0a2e443cc5c6ae
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
-Patch0:		%{name}-confdir.patch
 URL:		http://sunsite.dk/vpnd/
+BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
@@ -30,14 +30,15 @@ vpnd jest demonem, który ³±czy dwie sieci poprzez TCP/IP lub
 Wszystkie dane przesy³ane pomiêdzy sieciami s± szyfrowane za pomoc±
 nieopatentowanego algorytmu Blowfish (zobacz
 http://www.counterpane.com/) z kluczem d³ugo¶ci do 576 bitów
-(zmniejszanym do 0 by sprostaæ wszelkim prawnym restrykcjom.
+(zmniejszanym do 0 by sprostaæ wszelkim prawnym restrykcjom).
 
 %prep
 %setup -q -n %{name}
-%patch0 -p1
+find . -type f -print | xargs %{__sed} -i -e "s@/etc/vpnd\.@/etc/vpnd/vpnd.@g"
+%{__sed} -i -e "s@-O3@%{rpmcflags} @g" -e "s@CC=gcc@CC=%{__cc}@" configure
 
 %build
-%configure
+./configure
 %{__make}
 
 %install
