@@ -1,5 +1,5 @@
 Summary:	Virtual Private Network Daemon
-Summary(pl):	Daemon Wirtualnych Sieci Prywatnych (VPN)
+Summary(pl.UTF-8):   Daemon Wirtualnych Sieci Prywatnych (VPN)
 Name:		vpnd
 Version:	1.1.2
 Release:	0.1
@@ -24,13 +24,13 @@ unpatented free Blowfish encryption algorithm (see
 http://www.counterpane.com/) with a key length of up to 576 bits (may
 be downgraded to a minimum of 0 bits to suit any legal restrictions).
 
-%description -l pl
-vpnd jest demonem, który ³±czy dwie sieci poprzez TCP/IP lub
-(wirtualn±) liniê dzier¿awion± do³±czon± do interfejsu szeregowego.
-Wszystkie dane przesy³ane pomiêdzy sieciami s± szyfrowane za pomoc±
+%description -l pl.UTF-8
+vpnd jest demonem, ktÃ³ry Å‚Ä…czy dwie sieci poprzez TCP/IP lub
+(wirtualnÄ…) liniÄ™ dzierÅ¼awionÄ… doÅ‚Ä…czonÄ… do interfejsu szeregowego.
+Wszystkie dane przesyÅ‚ane pomiÄ™dzy sieciami sÄ… szyfrowane za pomocÄ…
 nieopatentowanego algorytmu Blowfish (zobacz
-http://www.counterpane.com/) z kluczem d³ugo¶ci do 576 bitów
-(zmniejszanym do 0 by sprostaæ wszelkim prawnym restrykcjom).
+http://www.counterpane.com/) z kluczem dÅ‚ugoÅ›ci do 576 bitÃ³w
+(zmniejszanym do 0 by sprostaÄ‡ wszelkim prawnym restrykcjom).
 
 %prep
 %setup -q -n %{name}
