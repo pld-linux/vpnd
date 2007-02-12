@@ -1,5 +1,5 @@
 Summary:	Virtual Private Network Daemon
-Summary(pl.UTF-8):   Daemon Wirtualnych Sieci Prywatnych (VPN)
+Summary(pl.UTF-8):	Daemon Wirtualnych Sieci Prywatnych (VPN)
 Name:		vpnd
 Version:	1.1.2
 Release:	0.1
