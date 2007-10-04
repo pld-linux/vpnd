@@ -10,6 +10,7 @@ Source0:	http://sunsite.dk/vpnd/archive/%{name}-%{version}.tar.gz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 URL:		http://sunsite.dk/vpnd/
+BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	sed >= 4.0
 BuildRequires:	zlib-devel
 Requires(post,preun):	/sbin/chkconfig
@@ -57,17 +58,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add vpnd
-if [ -f %{_var}/lock/subsys/vpnd ]; then
-	/etc/rc.d/init.d/vpnd restart >&2
-else
-	echo "Run \"/etc/rc.d/init.d/vpnd start\" to start vtun daemons."
-fi
+%service vpnd restart
 
 %preun
 if [ "$1" = "0" ]; then
-	if [ -f %{_var}/lock/subsys/vpnd ]; then
-		/etc/rc.d/init.d/vpnd stop >&2
-	fi
+	%service vpnd stop
 	/sbin/chkconfig --del vpnd
 fi
 
